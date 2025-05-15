@@ -247,6 +247,22 @@ See `directory-slideshow--autoplay-reverse?'"
               (not directory-slideshow--autoplay-reverse?))
   (directory-slideshow--render-control-buffer))
 
+(defun directory-slideshow--autoplay-start ()
+  "Start autoplay."
+  (let ((control-buffer (current-buffer))
+        (control-frame (selected-frame)))
+    (setq-local directory-slideshow--autoplay-timer
+                (run-with-timer
+                 directory-slideshow-autoplay-interval
+                 directory-slideshow-autoplay-interval
+                 (lambda ()
+                   (with-selected-frame control-frame
+                     (with-current-buffer control-buffer
+                       (unless (active-minibuffer-window)
+                         (if directory-slideshow--autoplay-reverse?
+                             (directory-slideshow-retreat)
+                           (directory-slideshow-advance))))))))))
+
 (defun directory-slideshow-toggle-play ()
   "Play or pause the slideshow."
   (interactive)
@@ -255,20 +271,8 @@ See `directory-slideshow--autoplay-reverse?'"
         (cancel-timer directory-slideshow--autoplay-timer)
         (setq-local directory-slideshow--autoplay-timer nil)
         (message "Slideshow autoplay stopped"))
-    (let ((control-buffer (current-buffer))
-          (control-frame (selected-frame)))
-      (setq-local directory-slideshow--autoplay-timer
-                  (run-with-timer
-                   directory-slideshow-autoplay-interval
-                   directory-slideshow-autoplay-interval
-                   (lambda ()
-                     (with-selected-frame control-frame
-                       (with-current-buffer control-buffer
-                         (unless (active-minibuffer-window)
-                           (if directory-slideshow--autoplay-reverse?
-                               (directory-slideshow-retreat)
-                             (directory-slideshow-advance))))))))
-      (message "Slideshow autoplay started")))
+    (directory-slideshow--autoplay-start)
+    (message "Slideshow autoplay started"))
   (directory-slideshow--render-control-buffer))
 
 (defun directory-slideshow-toggle-wrap-around ()
@@ -348,6 +352,11 @@ Update buffer-local value of
   (interactive)
   (directory-slideshow--slide-index-advance)
   (directory-slideshow--go-to-current-slide)
+  ;; Reset autoplay timer if user advances manually.
+  (when (and directory-slideshow--autoplay-timer
+             (interactive-p))
+    (cancel-timer directory-slideshow--autoplay-timer)
+    (directory-slideshow--autoplay-start))
   (directory-slideshow--render-preview))
 
 (defun directory-slideshow-retreat ()
@@ -355,6 +364,10 @@ Update buffer-local value of
   (interactive)
   (directory-slideshow--slide-index-retreat)
   (directory-slideshow--go-to-current-slide)
+  (when (and directory-slideshow--autoplay-timer
+             (interactive-p))
+    (cancel-timer directory-slideshow--autoplay-timer)
+    (directory-slideshow--autoplay-start))
   (directory-slideshow--render-preview))
 
 ;;;###autoload
