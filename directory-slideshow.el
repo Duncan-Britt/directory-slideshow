@@ -46,7 +46,7 @@
 ;; ┌──────────┐
 ;; │ Features │
 ;; └──────────┘
-;; - Speaker notes via 'file-name.ext.speaker-notes'
+;; - Speaker notes via '<file-name>.<ext>.speaker-notes'
 ;; - Upcoming slide previews in control frame
 ;; - Chunk (split window, 2 files per slide)
 ;; - Sliding Window (split window, sliding window effect)
@@ -306,7 +306,8 @@ restart `directory-slideshow--autoplay-timer' (if it exists)"
                              (if directory-slideshow--autoplay-reverse?
                                  (directory-slideshow-retreat)
                                (directory-slideshow-advance))))))))
-        (message "Slideshow autoplay started")))))
+        (message "Slideshow autoplay started"))))
+  (directory-slideshow--render-control-buffer))
 
 (defun directory-slideshow-set-presentation-mode ()
   "Update buffer-local value of `directory-slideshow-presentation-mode'."

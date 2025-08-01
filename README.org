@@ -11,7 +11,7 @@ Slide transitions and are performed from a separate control frame, inspired by E
 * TODO Demo
 
 * Features
-- Speaker notes via =file-name.ext.speaker-notes=
+- Speaker notes via =<file-name>.<ext>.speaker-notes=
 - Upcoming slide previews in control frame
 - Chunk (split window, 2 files per slide)
 - Sliding Window (split window, sliding window effect)
