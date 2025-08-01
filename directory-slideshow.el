@@ -306,7 +306,8 @@ restart `directory-slideshow--autoplay-timer' (if it exists)"
                              (if directory-slideshow--autoplay-reverse?
                                  (directory-slideshow-retreat)
                                (directory-slideshow-advance))))))))
-        (message "Slideshow autoplay started")))))
+        (message "Slideshow autoplay started"))))
+  (directory-slideshow--render-control-buffer))
 
 (defun directory-slideshow-set-presentation-mode ()
   "Update buffer-local value of `directory-slideshow-presentation-mode'."
