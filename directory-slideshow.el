@@ -28,18 +28,18 @@
 ;; │ Summary │
 ;; └─────────┘
 ;; The premise of this package is that if you have a folder, you have
-;; a slideshow. The files are the slides. You can create slideshows by
-;; putting files (or symlinks) in folders. But you can also present
+;; a slideshow.  The files are the slides.  You can create slideshows by
+;; putting files (or symlinks) in folders.  But you can also present
 ;; the contents of some arbitrary directory created for some other
 ;; purpose.
 
 ;; The slides themselves are completely ordinary buffers with no
 ;; additional settings associated with the slideshow.  Slide
 ;; transitions and are performed from a separate control frame,
-;; inspired by Ediff. Further, the package imposes no restrictions on
-;; which file types may be used as slides. This makes slides
+;; inspired by Ediff.  Further, the package imposes no restrictions on
+;; which file types may be used as slides.  This makes slides
 ;; interactive—you can highlight, edit, navigate, execute code,
-;; find-file, split-window, etc., all without inhibitions. Moreover,
+;; find-file, split-window, etc., all without inhibitions.  Moreover,
 ;; you can present the files you already have with no additional
 ;; setup, such as, for example, a photo album.
 
@@ -88,7 +88,7 @@
 ;; frame.
 
 ;; `directory-slideshow-after-slide-render-hook' provides a means by
-;; which you can customize the appearance of slides. For example,
+;; which you can customize the appearance of slides.  For example,
 ;;
 ;;  (defun my/slideshow-text-adjustment ()
 ;;    (when (derived-mode-p 'text-mode)
@@ -101,7 +101,7 @@
 ;;
 
 ;; By default, slides are ordered lexicographically by file
-;; name. `directory-slideshow-file-name-sort-compare-fn' can be set to
+;; name.  `directory-slideshow-file-name-sort-compare-fn' can be set to
 ;; a custom function to change the way the slides are ordered.
 
 ;; To make any settings local to a slideshow, use '.dir-locals'.
@@ -337,7 +337,7 @@ Update buffer-local value of
   (interactive)
   (if-let (fname (buffer-file-name))
       (find-file (concat fname directory-slideshow-speaker-notes-suffix))
-    (user-error "Attempt to make speaker-notes for a buffer with no file.")))
+    (user-error "Attempt to make speaker-notes for a buffer with no file")))
 
 (defun directory-slideshow-quit ()
   "End the slideshow and cleanup."
@@ -346,27 +346,27 @@ Update buffer-local value of
       (progn
         (directory-slideshow--cleanup)
         (kill-buffer))
-    (user-error "Attempt to quit directory slideshow while not in `directory-slideshow-mode'.")))
+    (user-error "Attempt to quit directory slideshow while not in `directory-slideshow-mode'")))
 
-(defun directory-slideshow-advance ()
+(defun directory-slideshow-advance (&optional called-interactively?)
   "Advance to the next slide."
-  (interactive)
+  (interactive (list t))
   (directory-slideshow--slide-index-advance)
   (directory-slideshow--go-to-current-slide)
   ;; Reset autoplay timer if user advances manually.
   (when (and directory-slideshow--autoplay-timer
-             (interactive-p))
+             called-interactively?)
     (cancel-timer directory-slideshow--autoplay-timer)
     (directory-slideshow--autoplay-start))
   (directory-slideshow--render-preview))
 
-(defun directory-slideshow-retreat ()
+(defun directory-slideshow-retreat (&optional called-interactively?)
   "Revert to previous slide."
-  (interactive)
+  (interactive (list t))
   (directory-slideshow--slide-index-retreat)
   (directory-slideshow--go-to-current-slide)
   (when (and directory-slideshow--autoplay-timer
-             (interactive-p))
+             called-interactively?)
     (cancel-timer directory-slideshow--autoplay-timer)
     (directory-slideshow--autoplay-start))
   (directory-slideshow--render-preview))
