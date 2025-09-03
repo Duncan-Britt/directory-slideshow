@@ -3,12 +3,14 @@
 #+date: <2025-04-18>
 #+options: toc:nil
 
+[[https://melpa.org/#/directory-slideshow][https://melpa.org/packages/directory-slideshow-badge.svg]]
+
 The premise of this package is that if you have a folder, you have a slideshow. The files are the slides. You can create slideshows by putting files (or symlinks) in folders. But you can also present the contents of some arbitrary directory created for some other purpose.
 
 The slides themselves are completely ordinary buffers with no additional settings associated with the slideshow.
 Slide transitions and are performed from a separate control frame, inspired by Ediff. Further, the package imposes no restrictions on which file types may be used as slides. This makes slides  interactive—you can highlight, edit, navigate, execute code, find-file, split-window, etc., all without inhibitions. Moreover, you can present the files you already have with no additional setup, such as, for example, a photo album.
 
-* TODO Demo
+* [[https://youtu.be/pNLFXdVwYcA][Demo Video]]
 
 * Features
 - Speaker notes via =<file-name>.<ext>.speaker-notes=
